@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Emergency Health Profile - HealthVault{% endblock %}
+
+{% block content %}
+
+{% if state == "active" %}
+
+<section class="emergency">
+    <div class="emergency-banner">
+        <p class="emergency-label">&#10010; EMERGENCY HEALTH PROFILE</p>
+        <h1>{{ data.name }}</h1>
+    </div>
+
+    <div class="warning-box">
+        This information is provided by the user and should be verified by
+        medical professionals whenever possible.
+    </div>
+
+    <div class="info-card blood-card">
+        <span class="info-label">Blood Group</span>
+        <span class="blood-value">{{ data.blood_group or "Not provided" }}</span>
+    </div>
+
+    <div class="info-card">
+        <span class="info-label">Allergies</span>
+        <p class="info-value {% if not data.allergies %}not-provided{% endif %}">{{ data.allergies or "Not provided" }}</p>
+    </div>
+
+    <div class="info-card">
+        <span class="info-label">Important Medication</span>
+        <p class="info-value {% if not data.medications %}not-provided{% endif %}">{{ data.medications or "Not provided" }}</p>
+    </div>
+
+    <div class="info-card">
+        <span class="info-label">Important Medical Condition</span>
+        <p class="info-value {% if not data.medical_condition %}not-provided{% endif %}">{{ data.medical_condition or "Not provided" }}</p>
+    </div>
+
+    <div class="info-card contact-card">
+        <span class="info-label">Emergency Contact</span>
+        {% if data.contact_name or data.contact_phone %}
+            {% if data.contact_name %}
+                <p class="info-value">{{ data.contact_name }}</p>
+            {% endif %}
+            {% if data.contact_phone %}
+                <a class="call-button" href="tel:{{ data.contact_phone | replace(' ', '') }}">
+                    &#128222; Call {{ data.contact_phone }}
+                </a>
+            {% endif %}
+        {% else %}
+            <p class="info-value not-provided">Not provided</p>
+        {% endif %}
+    </div>
+
+    <div class="form-row">
+        <div class="info-card">
+            <span class="info-label">Organ Donor</span>
+            <p class="info-value {% if not data.organ_donor %}not-provided{% endif %}">{{ data.organ_donor or "Not provided" }}</p>
+        </div>
+
+        <div class="info-card">
+            <span class="info-label">Preferred Language</span>
+            <p class="info-value {% if not data.preferred_language %}not-provided{% endif %}">{{ data.preferred_language or "Not provided" }}</p>
+        </div>
+    </div>
+
+    <p class="muted small emergency-updated">
+        Last updated by the user: {{ data.updated_at.strftime("%d %b %Y") }}
+    </p>
+</section>
+
+{% elif state == "disabled" %}
+
+<section class="auth-card unavailable-card">
+    <h1>Profile Unavailable</h1>
+    <p class="auth-subtitle">This emergency profile is currently unavailable.</p>
+</section>
+
+{% else %}
+
+<section class="auth-card unavailable-card">
+    <h1>Profile Not Found</h1>
+    <p class="auth-subtitle">
+        This emergency link is not valid. Please check that the QR code or
+        link was scanned or typed correctly.
+    </p>
+</section>
+
+{% endif %}
+
+{% endblock %}

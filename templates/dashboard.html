@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - HealthVault{% endblock %}
+
+{% block content %}
+<section class="dashboard-header">
+    <h1>Welcome, {{ g.user.full_name }}</h1>
+    <p class="muted">
+        Fill in the information you want available in an emergency.
+        Every field except your name is optional.
+    </p>
+</section>
+
+<section class="card qr-card">
+    <h2>Your Emergency QR Code</h2>
+
+    <div class="qr-layout">
+        <img class="qr-image {% if not profile.qr_enabled %}qr-image-disabled{% endif %}"
+             src="{{ url_for('qr_image') }}"
+             alt="Your HealthVault emergency QR code"
+             width="240" height="240">
+
+        <div class="qr-details">
+            <p class="qr-instruction">
+                Scan this QR in an emergency to view my emergency health information.
+            </p>
+            <p class="muted small">
+                The QR code contains only a private link, never your medical
+                details. Print it, or save it as a phone lock-screen image.
+            </p>
+
+            <a href="{{ url_for('qr_download') }}" class="btn btn-primary">Download QR Code</a>
+
+            <div class="link-box">
+                <label for="emergency-link" class="small muted">Your emergency link</label>
+                <div class="link-row">
+                    <input type="text" id="emergency-link" value="{{ emergency_url }}" readonly>
+                    <button type="button" class="btn btn-secondary btn-small" id="copy-link-btn">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="card status-card">
+    <h2>Emergency QR Status</h2>
+
+    {% if profile.qr_enabled %}
+        <div class="status-row">
+            <span class="status-badge status-active">&#128994; Active</span>
+            <p class="muted">
+                Anyone who scans your QR code can see your emergency information.
+            </p>
+        </div>
+
+        <form method="POST" action="{{ url_for('qr_status') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="disable">
+            <button type="submit" class="btn btn-danger">Disable QR</button>
+        </form>
+    {% else %}
+        <div class="status-row">
+            <span class="status-badge status-disabled">&#128308; Disabled</span>
+            <p class="muted">
+                Scanning your QR code shows only "This emergency profile is
+                currently unavailable." Your information is hidden.
+            </p>
+        </div>
+
+        <form method="POST" action="{{ url_for('qr_status') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="enable">
+            <button type="submit" class="btn btn-primary">Enable QR</button>
+        </form>
+    {% endif %}
+
+    <div class="link-box">
+        <p class="small muted">
+            <strong>Lost your QR code, or shared it by mistake?</strong>
+            Creating a new one makes the old QR code and link stop working immediately.
+        </p>
+        <form method="POST" action="{{ url_for('qr_regenerate') }}"
+              data-confirm="Create a new QR code? Your old QR code and link will stop working.">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-secondary btn-small">Create New QR Code</button>
+        </form>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Emergency Health Profile</h2>
+
+    <form method="POST" action="{{ url_for('dashboard') }}" novalidate>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="form-group">
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name"
+                   value="{{ form.full_name }}" maxlength="100" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="blood_group">Blood Group</label>
+                <select id="blood_group" name="blood_group">
+                    <option value="">-- Not specified --</option>
+                    {% for bg in blood_groups %}
+                        <option value="{{ bg }}" {% if form.blood_group == bg %}selected{% endif %}>{{ bg }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="organ_donor">Organ Donor</label>
+                <select id="organ_donor" name="organ_donor">
+                    <option value="">-- Not specified --</option>
+                    {% for option in organ_donor_options %}
+                        <option value="{{ option }}" {% if form.organ_donor == option %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="allergies">Allergies</label>
+            <textarea id="allergies" name="allergies" rows="3" maxlength="1000"
+                      placeholder="For example: Penicillin, peanuts">{{ form.allergies }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="medications">Important Current Medication</label>
+            <textarea id="medications" name="medications" rows="3" maxlength="1000"
+                      placeholder="For example: Insulin, blood thinners">{{ form.medications }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="medical_condition">Important Medical Condition</label>
+            <textarea id="medical_condition" name="medical_condition" rows="3" maxlength="1000"
+                      placeholder="For example: Diabetes, epilepsy, heart condition">{{ form.medical_condition }}</textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="emergency_contact_name">Emergency Contact Name</label>
+                <input type="text" id="emergency_contact_name" name="emergency_contact_name"
+                       value="{{ form.emergency_contact_name }}" maxlength="100">
+            </div>
+
+            <div class="form-group">
+                <label for="emergency_contact_phone">Emergency Contact Phone</label>
+                <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone"
+                       value="{{ form.emergency_contact_phone }}" maxlength="30"
+                       placeholder="+880 1XXX-XXXXXX">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="preferred_language">Preferred Language</label>
+            <input type="text" id="preferred_language" name="preferred_language"
+                   value="{{ form.preferred_language }}" maxlength="50"
+                   placeholder="For example: Bangla, English">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <span class="muted small">
+                Last updated: {{ profile.updated_at.strftime("%d %b %Y, %H:%M") }} UTC
+            </span>
+        </div>
+    </form>
+</section>
+{% endblock %}

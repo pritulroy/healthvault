@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Login - HealthVault{% endblock %}
+
+{% block content %}
+<section class="auth-card">
+    <h1>Login</h1>
+    <p class="auth-subtitle">Welcome back to HealthVault.</p>
+
+    <form method="POST" action="{{ url_for('login') }}" novalidate>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email"
+                   value="{{ email }}" maxlength="120"
+                   autocomplete="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"
+                   autocomplete="current-password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full">Login</button>
+    </form>
+
+    <p class="auth-switch">
+        New to HealthVault? <a href="{{ url_for('register') }}">Create an account</a>
+    </p>
+</section>
+{% endblock %}

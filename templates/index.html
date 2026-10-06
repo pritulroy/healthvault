@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}HealthVault - Your Health. Your Identity. Your Control.{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>HealthVault</h1>
+    <p class="tagline">Your Health. Your Identity. Your Control.</p>
+    <p class="hero-text">
+        Keep your essential emergency health information accessible when it matters most.
+    </p>
+    <div class="hero-buttons">
+        {% if g.user %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+            <a href="{{ url_for('register') }}" class="btn btn-primary">Create Account</a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

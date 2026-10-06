@@ -1,0 +1,556 @@
+/* ---------- Basic reset and variables ---------- */
+:root {
+    --primary: #0f766e;        /* teal: calm, medical feel */
+    --primary-dark: #0b5d57;
+    --danger: #dc2626;
+    --danger-dark: #b91c1c;
+    --success: #16a34a;
+    --bg: #f5f9fa;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --radius: 14px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;               /* pushes the footer to the bottom */
+    padding-top: 24px;
+    padding-bottom: 40px;
+}
+
+.container {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    color: var(--primary);
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.small {
+    font-size: 0.85rem;
+}
+
+/* ---------- Header ---------- */
+.site-header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav-link {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: var(--primary);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-secondary:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: var(--danger-dark);
+}
+
+.btn-small {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+}
+
+.btn-full {
+    width: 100%;
+    margin-top: 8px;
+}
+
+/* ---------- Landing page hero ---------- */
+.hero {
+    text-align: center;
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 72px 24px;
+    margin-top: 24px;
+    box-shadow: 0 4px 20px rgba(15, 118, 110, 0.08);
+}
+
+.hero h1 {
+    font-size: 3rem;
+    color: var(--primary);
+}
+
+.tagline {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.hero-text {
+    max-width: 520px;
+    margin: 20px auto 32px;
+    color: var(--muted);
+    font-size: 1.1rem;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+/* ---------- Auth cards (register / login) ---------- */
+.auth-card {
+    max-width: 440px;
+    margin: 24px auto 0;
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    box-shadow: 0 4px 20px rgba(15, 118, 110, 0.08);
+}
+
+.auth-card h1 {
+    font-size: 1.8rem;
+    color: var(--primary);
+}
+
+.auth-subtitle {
+    color: var(--muted);
+    margin: 6px 0 24px;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--muted);
+}
+
+/* ---------- Dashboard ---------- */
+.dashboard-header {
+    margin-bottom: 20px;
+}
+
+.dashboard-header h1 {
+    font-size: 1.8rem;
+    color: var(--primary);
+}
+
+.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(15, 118, 110, 0.08);
+}
+
+.card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+}
+
+/* ---------- QR code card ---------- */
+.qr-layout {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+}
+
+.qr-image {
+    flex-shrink: 0;
+    width: 240px;
+    height: 240px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    background: #fff;
+}
+
+/* When the QR is disabled, fade the image as a visual hint */
+.qr-image-disabled {
+    opacity: 0.35;
+}
+
+.qr-details {
+    flex: 1;
+    min-width: 0;              /* lets the link box shrink inside flex */
+}
+
+.qr-instruction {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.qr-details .btn {
+    margin-top: 16px;
+}
+
+.link-box {
+    margin-top: 20px;
+}
+
+.link-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.link-row input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ---------- QR status card ---------- */
+.status-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    white-space: nowrap;
+}
+
+.status-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-disabled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ---------- Forms ---------- */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Two fields side by side on wide screens, stacked on phones */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+/* ---------- Flash messages ---------- */
+.flash {
+    max-width: 640px;
+    margin: 0 auto 16px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.flash-error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.flash-success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.flash-info {
+    background: #e0f2fe;
+    color: #075985;
+}
+
+/* ---------- Emergency page (public, mobile-first) ---------- */
+.emergency {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.emergency-banner {
+    background: var(--danger);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.emergency-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    opacity: 0.95;
+}
+
+.emergency-banner h1 {
+    font-size: 2rem;
+    margin-top: 6px;
+    word-break: break-word;
+}
+
+.warning-box {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.info-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 20px rgba(15, 118, 110, 0.08);
+}
+
+.info-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    white-space: pre-line;     /* keep line breaks the user typed */
+    word-break: break-word;
+}
+
+.not-provided {
+    color: var(--muted);
+    font-weight: 400;
+    font-style: italic;
+}
+
+.blood-card {
+    text-align: center;
+    border: 3px solid var(--danger);
+}
+
+.blood-value {
+    display: block;
+    font-size: 3.2rem;
+    font-weight: 800;
+    color: var(--danger);
+    line-height: 1.1;
+}
+
+.call-button {
+    display: block;
+    margin-top: 10px;
+    padding: 16px;
+    background: var(--success);
+    color: #fff;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 12px;
+    text-decoration: none;
+}
+
+.call-button:hover {
+    background: #15803d;
+}
+
+.emergency-updated {
+    text-align: center;
+    margin-top: 6px;
+}
+
+.unavailable-card {
+    text-align: center;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.privacy-notice {
+    margin-bottom: 6px;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+    .hero {
+        padding: 48px 16px;
+    }
+    .hero h1 {
+        font-size: 2.3rem;
+    }
+    .auth-card {
+        padding: 28px 20px;
+    }
+    .card {
+        padding: 22px 18px;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .emergency-banner h1 {
+        font-size: 1.7rem;
+    }
+    .qr-layout {
+        flex-direction: column;
+        text-align: center;
+    }
+    .qr-image {
+        width: 220px;
+        height: 220px;
+    }
+    .status-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
